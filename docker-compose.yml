@@ -10,7 +10,8 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rag_dev_pwd}
       POSTGRES_DB: ${POSTGRES_DB:-rag}
     ports:
-      - "5432:5432"
+      # 5433 en el host (5432 suele estar ocupado por otro Postgres). Interno sigue siendo 5432.
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/00_init.sql:ro
@@ -33,12 +34,19 @@ services:
       # La APP usa asyncpg; Alembic usa psycopg (modo síncrono).
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-rag}:${POSTGRES_PASSWORD:-rag_dev_pwd}@db:5432/${POSTGRES_DB:-rag}
       ALEMBIC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-rag}:${POSTGRES_PASSWORD:-rag_dev_pwd}@db:5432/${POSTGRES_DB:-rag}
+      DATA_DIR: /data
+      UPLOADS_DIR: /data/uploads
+      TTS_CACHE_DIR: /data/tts_cache
+      MODELS_DIR: /models
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app          # hot-reload del código
       - ./models:/models        # pesos compartidos (BGE-m3, reranker, voz)
       - ./data:/data            # uploads, datasets, audio TTS
+    extra_hosts:
+      # Permite al contenedor llamar al Ollama que corre en el host (LLM local/gratis).
+      - "host.docker.internal:host-gateway"
     depends_on:
       db:
         condition: service_healthy

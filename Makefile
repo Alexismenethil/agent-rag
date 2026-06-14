@@ -47,7 +47,7 @@ fmt:                 ## Formatea backend y frontend
 	docker compose exec frontend npm run format
 
 test:                ## Tests del backend
-	docker compose exec backend pytest -q
+	docker compose run --rm --build backend python -m pytest -q
 
 clean:               ## Limpia caches locales
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

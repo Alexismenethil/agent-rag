@@ -27,6 +27,10 @@ class Settings(BaseSettings):
     llm_model_fallback: str = "claude-haiku-4-5-20251001"
     llm_max_tokens: int = 2048
     llm_temperature: float = 0.1
+    # Modo local offline: servidor OpenAI-compatible (Ollama / vLLM). Desde el contenedor el
+    # host es `host.docker.internal`, no `localhost`. La base ya termina en `/v1`.
+    local_llm_base_url: str = "http://localhost:11434/v1"
+    local_llm_model: str = "qwen2.5:7b-instruct"
 
     # --- Embeddings / reranker (V1/V2) ---
     embedding_model: str = "BAAI/bge-m3"

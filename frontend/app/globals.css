@@ -1,69 +1,243 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Sistema de diseño "clean premium / blanco Apple".
+   Base blanca (sin modo oscuro). Tokens exactos del skill web-clean.
+   Tailwind v4 con @theme inline expone los tokens como utilidades.
+   ========================================================================== */
+
 :root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --ok: #22c55e;
-  --down: #ef4444;
-  --accent: #38bdf8;
+  --background: #ffffff;
+  --foreground: #1d1d1f;
+
+  /* Sombras como custom properties reales, para usarlas con var() en estilos
+     inline además de las utilidades shadow-* que genera Tailwind. */
+  --shadow-soft: 0 1px 2px rgba(20, 24, 31, 0.04), 0 8px 24px rgba(20, 24, 31, 0.05);
+  --shadow-card: 0 2px 8px rgba(20, 24, 31, 0.04), 0 18px 48px rgba(20, 24, 31, 0.08);
+  --shadow-lift: 0 10px 30px rgba(20, 24, 31, 0.08), 0 44px 90px rgba(20, 24, 31, 0.14);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-clean);
+
+  --color-primary: #0a84ff;
+  --color-primary-dark: #005ecb;
+  --color-primary-soft: #eaf2ff;
+  --color-cyan: #32ade6;
+  --color-cyan-light: #64d2ff;
+  --color-cyan-soft: #e6f7ff;
+  --color-warm: #ff9500;
+  --color-warm-dark: #e07c00;
+  --color-warm-soft: #fff4e5;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f5f7;
+  --color-ink: #1d1d1f;
+  --color-ink-soft: #4a4a4f;
+  --color-ink-muted: #86868b;
+  --color-border: #ececf0;
+  --color-border-strong: #d8d8de;
+
+  --color-ok: #34c759;
+  --color-warn: #ff9f0a;
+  --color-down: #ff3b30;
+
+  --shadow-soft: 0 1px 2px rgba(20, 24, 31, 0.04), 0 8px 24px rgba(20, 24, 31, 0.05);
+  --shadow-card: 0 2px 8px rgba(20, 24, 31, 0.04), 0 18px 48px rgba(20, 24, 31, 0.08);
+  --shadow-lift: 0 10px 30px rgba(20, 24, 31, 0.08), 0 44px 90px rgba(20, 24, 31, 0.14);
 }
 
 * {
-  box-sizing: border-box;
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  font-family:
-    system-ui,
-    -apple-system,
-    Segoe UI,
-    Roboto,
-    sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-clean);
+  letter-spacing: -0.011em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 3rem 1.5rem;
+::selection {
+  background: rgba(10, 132, 255, 0.16);
+  color: var(--color-ink);
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  margin-top: 1.5rem;
+.font-display {
+  letter-spacing: -0.028em;
+  line-height: 1.05;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
+.text-balance {
+  text-wrap: balance;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
+.text-pretty {
+  text-wrap: pretty;
 }
 
-.dot.ok {
-  background: var(--ok);
+/* Fondo cálido del hero: luz azul/cyan muy suave sobre blanco. */
+.bg-hero {
+  background:
+    radial-gradient(60rem 40rem at 14% -8%, rgba(10, 132, 255, 0.1), transparent 60%),
+    radial-gradient(52rem 36rem at 94% 2%, rgba(100, 210, 255, 0.12), transparent 56%),
+    linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
 }
-.dot.down {
-  background: var(--down);
+
+.text-gradient {
+  background: linear-gradient(105deg, #0a84ff 0%, #32ade6 52%, #64d2ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-.muted {
-  color: var(--muted);
+
+/* Material translúcido (glass) del header y tarjetas flotantes. */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
-code {
-  background: #0b1220;
-  padding: 0.1rem 0.4rem;
-  border-radius: 5px;
+
+/* Reveal-on-scroll (una sola vez). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal="scale"] {
+  transform: translateY(34px) scale(0.965);
+}
+
+[data-reveal][data-show="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Sheen sweep para botones rellenos. */
+@keyframes sheen-sweep {
+  to {
+    transform: translateX(260%) skewX(-16deg);
+  }
+}
+
+.sheen {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 38%;
+  transform: translateX(-260%) skewX(-16deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  pointer-events: none;
+}
+
+.group:hover .sheen {
+  animation: sheen-sweep 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Barra de progreso de scroll. */
+.scroll-progress {
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, #0a84ff, #32ade6, #64d2ff);
+}
+
+/* Shimmer para skeletons de carga. */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    100deg,
+    var(--color-surface-muted) 30%,
+    var(--color-border) 50%,
+    var(--color-surface-muted) 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4dc;
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c0c0ca;
+  background-clip: padding-box;
+}
+
+/* ============================================================================
+   react-pdf: capas de texto y anotaciones (NO TOCAR la lógica de resaltado).
+   El resaltado de citas (ADR-003) depende de estas clases.
+   ========================================================================== */
+.react-pdf__Page {
+  background: transparent !important;
+}
+.react-pdf__Page__canvas {
+  border-radius: 14px;
+  box-shadow: var(--shadow-soft);
+}
+.textLayer {
+  opacity: 1;
+}
+.textLayer span {
+  color: transparent;
+  transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 2px;
+}
+/* Resaltado de destello sobre el span citado. */
+.textLayer span.cita-highlight {
+  background: rgba(255, 214, 10, 0.45);
+  box-shadow: 0 0 0 1px rgba(255, 214, 10, 0.5);
+}
+
+/* Respeta usuarios que prefieren menos movimiento. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
