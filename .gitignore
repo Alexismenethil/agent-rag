@@ -1,0 +1,80 @@
+# ===== Secretos y entornos =====
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+.secrets.baseline
+
+# ===== Python / backend =====
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# ===== Node / frontend =====
+node_modules/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+# tipos generados desde el OpenAPI del backend (se regeneran con `make openapi`)
+frontend/lib/api/types.gen.ts
+
+# ===== Modelos descargados / pesos (NO se versionan) =====
+models/
+*.gguf
+*.bin
+*.safetensors
+*.onnx
+*.onnx.json
+*.pt
+*.pth
+
+# ===== Caches de Hugging Face / ML =====
+.cache/
+**/.cache/huggingface/
+hf_cache/
+.huggingface/
+
+# ===== Datos sensibles: PDFs subidos y derivados (privacidad) =====
+data/
+# excepción: el set "gold" de evaluación SÍ se versiona, vive en backend/eval/datasets/
+!backend/eval/datasets/
+!backend/eval/datasets/**
+
+# ===== Audio temporal (TTS/STT) =====
+*.wav
+*.mp3
+tmp_audio/
+
+# ===== Base de datos local / dumps =====
+*.sqlite3
+*.db
+pgdata/
+*.dump
+*.sql.gz
+
+# ===== Sistema operativo / editores =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
